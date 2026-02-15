@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
@@ -12,11 +14,8 @@ import {
 /**
  * ProductPhaseTile
  * 
- * A self-contained, 600x600 animated visualization component.
+ * A self-contained, animated visualization component for the Animation Gallery.
  * Uses Framer Motion for high-performance animations and Tailwind CSS for styling.
- * 
- * Scaled internally to fit the 600x600 constraint while maintaining the original 
- * spatial relationships of the 700px+ design.
  */
 export default function ProductPhaseTile() {
   const [mounted, setMounted] = useState(false);
@@ -31,14 +30,14 @@ export default function ProductPhaseTile() {
     animate: { 
       opacity: [0.5, 0.8, 0.5], 
       scale: [1, 1.02, 1],
-      transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+      transition: { duration: 4, repeat: Infinity, repeatType: "mirror" as const }
     }
   };
 
   const floatVariant = (delay = 0) => ({
     animate: {
       y: [0, -10, 0],
-      transition: { duration: 6, delay, repeat: Infinity, ease: "easeInOut" }
+      transition: { duration: 6, delay, repeat: Infinity, repeatType: "mirror" as const }
     }
   });
 
@@ -48,16 +47,16 @@ export default function ProductPhaseTile() {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: { delay: custom * 0.1, duration: 0.5, ease: "backOut" }
+      transition: { delay: custom * 0.1, duration: 0.5 }
     })
   };
 
   return (
-    <div className="relative w-[600px] h-[600px] flex items-center justify-center select-none">
+    <div className="relative w-full aspect-square max-w-[600px] flex items-center justify-center select-none">
       {/* 
         Scaling Container: 
         The original design requires ~750px of space for the "pop out" cards.
-        We scale it down to perfectly fit the 600x600 rigid container.
+        We scale it down to perfectly fit the container.
       */}
       <div className="relative w-[700px] h-[700px] flex items-center justify-center scale-[0.80] origin-center">
         
@@ -70,7 +69,7 @@ export default function ProductPhaseTile() {
         />
         <motion.div 
           animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.03, 1] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" as const, delay: 1 }}
           className="absolute w-[520px] h-[520px] rounded-full border-[1.5px] border-[#EAB308]/10 dark:border-[#EAB308]/20"
         />
         <div className="absolute w-[380px] h-[380px] rounded-full border-[1.5px] border-[#A3E635]/10 dark:border-[#A3E635]/20" />
@@ -79,7 +78,7 @@ export default function ProductPhaseTile() {
         <motion.div 
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.8 }}
           className="relative z-10 w-[580px] h-[440px] rounded-3xl flex flex-col p-8 border border-slate-200/80 bg-[#F1F4F8]/80 dark:bg-[#162447]/80 dark:border-slate-700/80 backdrop-blur-xl shadow-[0_0_100px_rgba(36,99,235,0.1),0_0_40px_rgba(234,179,8,0.1)] dark:shadow-[0_0_100px_rgba(36,99,235,0.2),0_0_40px_rgba(234,179,8,0.15)]"
         >
           {/* Header */}
@@ -147,7 +146,7 @@ export default function ProductPhaseTile() {
           </div>
 
           {/* Central Ping (Bottom) */}
-          <div className="absolute bottom-10 left-1.2 -translate-x-1.2">
+          <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
             <div className="relative w-5 h-5 flex items-center justify-center">
               <span className="absolute inline-flex h-full w-full rounded-full bg-[#2463eb] opacity-30 animate-ping"></span>
               <span className="relative inline-flex rounded-full h-3 w-3 bg-[#2463eb] border-2 border-white shadow-[0_0_20px_rgba(36,99,235,0.4)]"></span>
@@ -208,7 +207,7 @@ export default function ProductPhaseTile() {
               <motion.div 
                 initial={{ width: 0 }}
                 animate={{ width: "88%" }}
-                transition={{ duration: 1.5, delay: 0.5, ease: "circOut" }}
+                transition={{ duration: 1.5, delay: 0.5 }}
                 className="h-full bg-lime-500 rounded-full shadow-[0_0_10px_rgba(163,230,53,0.3)]"
               />
             </div>
